@@ -1,0 +1,22 @@
+name: Build & Push Docker Image
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  docker-build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        run: echo ${{ secrets.DOCKER_PASS }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t yourname/app:latest .
+
+      - name: Push Docker image
+        run: docker push yourname/app:latest
